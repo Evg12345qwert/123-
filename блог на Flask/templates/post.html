@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} | Блог о кибернетике{% endblock %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.content }}</p>
+
+<h2>Комментарии</h2>
+<form method="POST" action="{{ url_for('add_comment', post_id=post.id) }}">
+    <textarea name="comment" required></textarea>
+    <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+</form>
+
+<ul class="list-group mt-3">
+    {% for comment in post.comments %}
+    <li class="list-group-item">
+        {{ comment }}
+        <a class="btn btn-danger btn-sm float-right" href="{{ url_for('delete_comment', post_id=post.id, comment_id=loop.index0) }}">Удалить</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-warning">Редактировать пост</a>
+<a href="{{ url_for('delete_post', post_id=post.id) }}" class="btn btn-danger">Удалить пост</a>
+<a href="{{ url_for('index') }}" class="btn btn-secondary">Назад к списку постов</a>
+{% endblock %}
